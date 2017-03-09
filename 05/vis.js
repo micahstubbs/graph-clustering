@@ -40,6 +40,14 @@ d3.json('graph.json', (error, graph) => {
     node.cluster = result[node.id]
   });
 
+  // ensure that link properties are number ids
+  // of source or target node
+  // to play nice with the d3 force layout
+  links.forEach(link => {
+    link.source = Number(link.source.id);
+    link.target = Number(link.target.id);
+  })
+
   // collect clusters from nodes
   const clusters = {};
   nodes.forEach((node) => {
@@ -58,6 +66,15 @@ d3.json('graph.json', (error, graph) => {
     .append('g')
       .attr('transform', `translate(${width / 2},${height / 2})`);
 
+  let link = svg.selectAll('line')
+    .data(graph.links)
+    .enter().append('line');
+
+  link  
+    .attr('class', 'link')
+    .style('stroke', 'darkgray')
+    .style('stroke-width', '2px');
+
   const circles = svg.append('g')
     .datum(nodes)
     .selectAll('.circle')
@@ -68,7 +85,9 @@ d3.json('graph.json', (error, graph) => {
       .attr('stroke', 'black')
       .attr('stroke-width', 1);
 
-  const simulation = d3.forceSimulation(nodes)
+  const simulation = d3.forceSimulation()
+    .nodes(nodes)
+    .force('link', d3.forceLink().id(d => d.id))
     .velocityDecay(0.2)
     .force('x', d3.forceX().strength(0.0005))
     .force('y', d3.forceY().strength(0.0005))
@@ -76,7 +95,17 @@ d3.json('graph.json', (error, graph) => {
     .force('cluster', clustering)
     .on('tick', ticked);
 
+  simulation.force('link')
+    .links(graph.links)
+    // .distance([85]);
+
   function ticked() {
+    link
+      .attr('x1', d => d.source.x)
+      .attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x)
+      .attr('y2', d => d.target.y);
+
     circles
       .attr('cx', d => d.x)
       .attr('cy', d => d.y);

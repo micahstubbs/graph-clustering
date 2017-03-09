@@ -70,7 +70,7 @@ function clustering(alpha) {
     let l = Math.sqrt(x * x + y * y);
     const r = d.r + cluster.r;
     if (l !== r) {
-      l = (l - r) / l * alpha;
+      l = ((l - r) / l) * alpha;
       d.x -= x *= l;
       d.y -= y *= l;
       cluster.x += x;

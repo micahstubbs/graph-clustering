@@ -1,4 +1,11 @@
-a force layout where like-nodes cluster together, drawn from randomly-generated data
+this iteration draws nothing and instead exposes a `window.graph` object that we can extract and convert to static data
+
+```
+const graph = {};
+graph.nodes = nodes;
+graph.links = [];
+window.graph = graph;
+```
 
 an iteration on the block [Clustered Force Layout 4.0](https://bl.ocks.org/shancarter/f621ac5d93498aa1223d8d20e5d3a0f4) from [@shancarter](https://twitter.com/shancarter)
 

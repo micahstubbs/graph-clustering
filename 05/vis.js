@@ -11,10 +11,10 @@ d3.json('graph.json', (error, graph) => {
   const height = 500;
 
   // separation between same-color circles
-  const padding = 1.5;
+  const padding = 9; // 1.5
 
   // separation between different-color circles
-  const clusterPadding = 6;
+  const clusterPadding = 48; // 6
 
   const maxRadius = 12;
 
@@ -33,7 +33,7 @@ d3.json('graph.json', (error, graph) => {
 
   var result  = community();
 
-  const defaultRadius = 10;
+  const defaultRadius = 8;
   nodes.forEach(function (node) {
     node.r = defaultRadius;
     node.id = Number(node.id);

@@ -40,7 +40,6 @@ const nodes = d3.range(200).map(() => {
 const graph = {};
 graph.nodes = nodes;
 graph.links = [];
-graph.clusters = clusters;
 console.log('graph', graph);
 window.graph = graph;
 

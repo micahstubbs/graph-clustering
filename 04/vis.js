@@ -17,20 +17,28 @@ d3.json('graph.json', (error, graph) => {
 
   const maxRadius = 12;
 
+  const z = d3.scaleOrdinal(d3.schemeCategory20);
+
   // total number of nodes
   const n = nodes.length;
 
-  // number of distinct clusters
-  const m = 10;
-
-  const z = d3.scaleOrdinal(d3.schemeCategory20);
-  const clusters = new Array(m);
+  // collect clusters from nodes
+  const clusters = {};
+  nodes.forEach((node) => {
+    const radius = node.r;
+    const clusterID = node.cluster;
+    if (!clusters[clusterID] || (radius > clusters[clusterID].r)) { 
+      clusters[clusterID] = node;
+    }
+  });
+  console.log('clusters', clusters);
 
   const svg = d3.select('body')
     .append('svg')
     .attr('height', height)
     .attr('width', width)
-    .append('g').attr('transform', `translate(${width / 2},${height / 2})`);
+    .append('g')
+      .attr('transform', `translate(${width / 2},${height / 2})`);
 
   const circles = svg.append('g')
     .datum(nodes)
@@ -56,7 +64,7 @@ d3.json('graph.json', (error, graph) => {
       .attr('cy', d => d.y);
   }
 
-  // These are implementations of the custom forces.
+  // These are implementations of the custom forces
   function clustering(alpha) {
     nodes.forEach((d) => {
       const cluster = clusters[d.cluster];

@@ -1,34 +1,37 @@
 /* global d3 */
 
-const margin = { top: 100, right: 100, bottom: 100, left: 100 };
-
-const width = 960;
-const height = 500;
-
-// separation between same-color circles
-const padding = 1.5;
-
-// separation between different-color circles
-const clusterPadding = 6;
-
-const maxRadius = 12;
-
-// total number of nodes
-const n = 200;
-
-// number of distinct clusters
-const m = 10;
-
-const z = d3.scaleOrdinal(d3.schemeCategory20);
-const clusters = new Array(m);
-
-const svg = d3.select('body')
-  .append('svg')
-  .attr('height', height)
-  .attr('width', width)
-  .append('g').attr('transform', `translate(${width / 2},${height / 2})`);
-
 d3.json('graph.json', (error, graph) => {
+  const nodes = graph.nodes;
+  console.log('nodes', nodes);
+
+  const margin = { top: 100, right: 100, bottom: 100, left: 100 };
+
+  const width = 960;
+  const height = 500;
+
+  // separation between same-color circles
+  const padding = 1.5;
+
+  // separation between different-color circles
+  const clusterPadding = 6;
+
+  const maxRadius = 12;
+
+  // total number of nodes
+  const n = nodes.length;
+
+  // number of distinct clusters
+  const m = 10;
+
+  const z = d3.scaleOrdinal(d3.schemeCategory20);
+  const clusters = new Array(m);
+
+  const svg = d3.select('body')
+    .append('svg')
+    .attr('height', height)
+    .attr('width', width)
+    .append('g').attr('transform', `translate(${width / 2},${height / 2})`);
+
   const circles = svg.append('g')
     .datum(nodes)
     .selectAll('.circle')
@@ -102,4 +105,4 @@ d3.json('graph.json', (error, graph) => {
       });
     });
   }
-})
+});

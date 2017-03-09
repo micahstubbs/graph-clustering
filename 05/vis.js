@@ -20,39 +20,23 @@ d3.json('graph.json', (error, graph) => {
 
   // total number of nodes
   const n = nodes.length;
-/*
+
   // detect communities with jsLouvain
   var nodeData = nodes.map(function (d) {return d.id});
-  var linkData = links.map(function (d) {return {source: d.source.id, target: d.target.id, weight: d.weight}; });
+  var linkData = links.map(function (d) {return {source: d.source, target: d.target, weight: d.weight}; });
 
   var community = jLouvain()
     .nodes(nodeData)
     .edges(linkData);
 
   var result  = community();
-*/
+
   const defaultRadius = 8;
   nodes.forEach(function (node) {
-    // node.r = defaultRadius;
-    node.id = Number(node.id);
-    delete node.label;
-    // node.cluster = result[node.id]
+    node.r = defaultRadius;
+    node.cluster = result[node.id]
   });
 
-  // ensure that link properties are number ids
-  // of source or target node
-  // to play nice with the d3 force layout
-  links.forEach(link => {
-    link.source = Number(link.source.id);
-    link.target = Number(link.target.id);
-    link.weight = Number(link.weight);
-  })
-
-  window.graph = {
-    nodes: nodes,
-    links: links
-  };
-/*
   // collect clusters from nodes
   const clusters = {};
   nodes.forEach((node) => {
@@ -187,5 +171,4 @@ d3.json('graph.json', (error, graph) => {
       });
     });
   }
-*/
 });

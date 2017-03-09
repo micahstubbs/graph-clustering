@@ -67,7 +67,7 @@ function clustering(alpha) {
     if (cluster === d) return;
     let x = d.x - cluster.x;
     let y = d.y - cluster.y;
-    let l = Math.sqrt(x * x + y * y);
+    let l = Math.sqrt((x * x) + (y * y));
     const r = d.r + cluster.r;
     if (l !== r) {
       l = ((l - r) / l) * alpha;

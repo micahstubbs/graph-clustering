@@ -98,7 +98,7 @@ function collide(alpha) {
         let l = Math.sqrt(x * x + y * y);
         const r = d.r + quad.data.r + (d.cluster === quad.data.cluster ? padding : clusterPadding);
         if (l < r) {
-          l = (l - r) / l * alpha;
+          l = ((l - r) / l) * alpha;
           d.x -= x *= l;
           d.y -= y *= l;
           quad.data.x += x;

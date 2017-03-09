@@ -5,8 +5,6 @@ d3.json('graph.json', (error, graph) => {
   const nodes = graph.nodes;
   const links = graph.links;
 
-  const margin = { top: 100, right: 100, bottom: 100, left: 100 };
-
   const width = 960;
   const height = 500;
 
@@ -22,22 +20,23 @@ d3.json('graph.json', (error, graph) => {
 
   // total number of nodes
   const n = nodes.length;
-
+/*
   // detect communities with jsLouvain
   var nodeData = nodes.map(function (d) {return d.id});
-  var linkData = links.map(function (d) {return {source: d.source.id, target: d.target.id, weight: 1}; });
+  var linkData = links.map(function (d) {return {source: d.source.id, target: d.target.id, weight: d.weight}; });
 
   var community = jLouvain()
     .nodes(nodeData)
     .edges(linkData);
 
   var result  = community();
-
+*/
   const defaultRadius = 8;
   nodes.forEach(function (node) {
-    node.r = defaultRadius;
+    // node.r = defaultRadius;
     node.id = Number(node.id);
-    node.cluster = result[node.id]
+    delete node.label;
+    // node.cluster = result[node.id]
   });
 
   // ensure that link properties are number ids
@@ -46,8 +45,14 @@ d3.json('graph.json', (error, graph) => {
   links.forEach(link => {
     link.source = Number(link.source.id);
     link.target = Number(link.target.id);
+    link.weight = Number(link.weight);
   })
 
+  window.graph = {
+    nodes: nodes,
+    links: links
+  };
+/*
   // collect clusters from nodes
   const clusters = {};
   nodes.forEach((node) => {
@@ -83,7 +88,12 @@ d3.json('graph.json', (error, graph) => {
       .attr('r', d => d.r)
       .attr('fill', d => z(d.cluster))
       .attr('stroke', 'black')
-      .attr('stroke-width', 1);
+      .attr('stroke-width', 1)
+      .call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended)
+      );
 
   const simulation = d3.forceSimulation()
     .nodes(nodes)
@@ -109,6 +119,23 @@ d3.json('graph.json', (error, graph) => {
     circles
       .attr('cx', d => d.x)
       .attr('cy', d => d.y);
+  }
+
+  function dragstarted(d) {
+    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+  }
+
+  function dragged(d) {
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
+  }
+
+  function dragended(d) {
+    if (!d3.event.active) simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
   }
 
   // These are implementations of the custom forces
@@ -160,4 +187,5 @@ d3.json('graph.json', (error, graph) => {
       });
     });
   }
+*/
 });

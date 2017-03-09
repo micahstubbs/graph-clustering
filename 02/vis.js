@@ -30,7 +30,7 @@ const svg = d3.select('body')
 
 const nodes = d3.range(200).map(() => {
   const i = Math.floor(Math.random() * m);
-  const radius = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * maxRadius;
+  const radius = Math.sqrt(((i + 1) / m) * -Math.log(Math.random())) * maxRadius;
   const d = { cluster: i, r: radius };
   if (!clusters[i] || (radius > clusters[i].r)) clusters[i] = d;
   return d;
